@@ -49,9 +49,11 @@ public class GraphComponent extends JComponent {
 		
 		//draw a grid
 		
-		for(double i=0; i<getHeight(); i+=.5){
+		for(double i=0; i<getHeight(); i+=20){
 			g.drawLine(0, (int)i, getWidth(), (int)i);
 		}
+		
+		
 		
 
 		g.translate(getWidth() / 2, getHeight() / 2);
