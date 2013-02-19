@@ -1,8 +1,6 @@
 package karman.physics;
 
 import java.awt.BorderLayout;
-import java.util.ArrayList;
-
 import javax.swing.JFrame;
 
 public class ProjectileGui extends JFrame{
@@ -14,8 +12,6 @@ public class ProjectileGui extends JFrame{
 		
 		
 		setLayout(new BorderLayout());
-		
-		ArrayList<Projectile> p=new ArrayList<Projectile>();
 		
 		
 		

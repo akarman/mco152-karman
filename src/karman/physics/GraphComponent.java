@@ -9,18 +9,17 @@ import javax.swing.JComponent;
 
 public class GraphComponent extends JComponent {
 
-	private ArrayList<Projectile> p;
-	private double time = 0;
+	private Projectile[] p;
 	private Random random;
 
 	public GraphComponent() {
 
 		random = new Random();
-		p = new ArrayList<Projectile>();
+		p = new Projectile[10];
 
-		for (int i = 0; i < 10; i++) {
-			p.add(new Projectile(getRandomAngle(), getRandomVelocity(),
-					getRandomColor()));
+		for (int i = 0; i < p.length; i++) {
+			p[i]=new Projectile(getRandomAngle(), getRandomVelocity(),
+					getRandomColor());
 		}
 	}
 
@@ -40,40 +39,48 @@ public class GraphComponent extends JComponent {
 		return 200 + random.nextInt(500);
 	}
 
+	private void drawGrid(Graphics g) {
+		// draw a grid
+
+		for (int i = 0; i < getHeight(); i += 20) {
+			g.drawLine(0, i, getWidth(), i);
+		}
+
+		for (int i = 0; i < getWidth(); i += 20) {
+			g.drawLine(i, 0, i, getHeight());
+		}
+	}
+
 	@Override
 	// override a method called paintComponent and in that we will do ALL our
 	// draw calls-
 	// or call methods that draw
 	// screen is Graphics
 	protected void paintComponent(Graphics g) {
-		
-		//draw a grid
-		
-		for(double i=0; i<getHeight(); i+=20){
-			g.drawLine(0, (int)i, getWidth(), (int)i);
-		}
-		
-		
-		
 
+		drawGrid(g);
 		g.translate(getWidth() / 2, getHeight() / 2);
 
-		time += .001;
+		for (int i=0; i<p.length;i++) {
 
-		for (Projectile aProj : p) {
-
-			g.setColor(aProj.getColor());
-
-			int x = (int) aProj.getX(time);
-			int y = (int) aProj.getY(time);
-			int size = 20;
+			//calculate x and y
+			int x = (int) p[i].getX(p[i].getTime());
+			int y = (int) p[i].getY(p[i].getTime());
+			
+			
+			g.setColor(p[i].getColor());
+			int size = 30;
 			g.fillOval(x - (size / 2), -y - (size / 2), size, size);
-			// don't recalculate x and y, store into a variable
-			// g.drawLine(x, -y, (int) aProj.getX(time - 1),
-			// (int) -aProj.getY(time - 1));
-
+			
+			//advance by one tick and check
+			//if off-screen, instantiate a new projectile
+			p[i].tick();
+			x=(int) p[i].getX(p[i].getTime());
+			y=(int) p[i].getY(p[i].getTime());
+			if(x>this.getWidth()/2||x<-(getWidth()/2)||y>getHeight()/2||y<-(getHeight()/2)){
+				p[i]=new Projectile(getRandomAngle(), getRandomVelocity(), getRandomColor());
+			}
 			this.repaint();
-
 		}
 
 	}

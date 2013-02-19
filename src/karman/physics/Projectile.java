@@ -8,12 +8,14 @@ public class Projectile {
 	private double angle;
 	private double velocity;
 	private Color color;
+	private double time;
 	
 	
 	public Projectile(double angle, double velocity, Color color) {
 		this.angle = angle;
 		this.velocity = velocity;
 		this.color=color;
+		this.time=0.000;
 	}
 	
 	public double getX(double time){
@@ -29,6 +31,14 @@ public class Projectile {
 	
 	public Color getColor(){
 		return color;
+	}
+	
+	public void tick(){
+		time+=.001;
+	}
+	
+	public double getTime(){
+		return time;
 	}
 
 	
