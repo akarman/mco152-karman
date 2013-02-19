@@ -18,7 +18,7 @@ public class GraphComponent extends JComponent {
 		p = new Projectile[10];
 
 		for (int i = 0; i < p.length; i++) {
-			p[i]=new Projectile(getRandomAngle(), getRandomVelocity(),
+			p[i] = new Projectile(getRandomAngle(), getRandomVelocity(),
 					getRandomColor());
 		}
 	}
@@ -61,28 +61,34 @@ public class GraphComponent extends JComponent {
 		drawGrid(g);
 		g.translate(getWidth() / 2, getHeight() / 2);
 
-		for (int i=0; i<p.length;i++) {
+		for (int i = 0; i < p.length; i++) {
 
-			//calculate x and y
-			int x = (int) p[i].getX(p[i].getTime());
-			int y = (int) p[i].getY(p[i].getTime());
-			
-			
-			g.setColor(p[i].getColor());
+			// calculate x and y
+			Projectile projectile = p[i];
+
+			int x = (int) projectile.getX(projectile.getTime());
+			int y = (int) projectile.getY(projectile.getTime());
+
+			g.setColor(projectile.getColor());
 			int size = 30;
 			g.fillOval(x - (size / 2), -y - (size / 2), size, size);
-			
-			//advance by one tick and check
-			//if off-screen, instantiate a new projectile
-			p[i].tick();
-			x=(int) p[i].getX(p[i].getTime());
-			y=(int) p[i].getY(p[i].getTime());
-			if(x>this.getWidth()/2||x<-(getWidth()/2)||y>getHeight()/2||y<-(getHeight()/2)){
-				p[i]=new Projectile(getRandomAngle(), getRandomVelocity(), getRandomColor());
-			}
-			this.repaint();
-		}
 
+			// advance by one tick and check
+			// if off-screen, instantiate a new projectile
+			projectile.tick();
+			x = (int) projectile.getX(projectile.getTime());
+			y = (int) projectile.getY(projectile.getTime());
+			if (isOffScreen(x, y)) {
+				p[i] = new Projectile(getRandomAngle(), getRandomVelocity(),
+						getRandomColor());
+			}
+		}
+		this.repaint();
+	}
+
+	private boolean isOffScreen(int x, int y) {
+		return x > this.getWidth() / 2 || x < -(getWidth() / 2)
+				|| y > getHeight() / 2 || y < -(getHeight() / 2);
 	}
 
 }
