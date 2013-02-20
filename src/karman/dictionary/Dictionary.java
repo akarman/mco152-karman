@@ -61,59 +61,55 @@ public class Dictionary {
 		return isAnagram;
 
 	}
-	
-	public boolean isAnagramSort(String word1, String word2){
-		char[] letters1=word1.toCharArray();
-		char[] letters2=word2.toCharArray();
-		
+
+	public boolean isAnagramSort(String word1, String word2) {
+		char[] letters1 = word1.toCharArray();
+		char[] letters2 = word2.toCharArray();
+
 		Arrays.sort(letters1);
 		Arrays.sort(letters2);
-		
-		
+
 		return Arrays.equals(letters1, letters2);
-		
+
 	}
-	
-	public boolean isAnagramMap(String word1, String word2){
-		HashMap<Character, Integer> letters= new HashMap<Character, Integer>();
+
+	public boolean isAnagramMap(String word1, String word2) {
+		HashMap<Character, Integer> letters = new HashMap<Character, Integer>();
 		char currLetter;
 		int num;
-		boolean isAnagram=true;
-		
-		for(int i=0; i<word1.length(); i++){
-			currLetter=word1.charAt(i);
-			if(letters.containsKey(currLetter)){
-				num=letters.get(currLetter);
-				letters.put(currLetter, num++);
-			}
-			else{
+		boolean isAnagram = true;
+
+		for (int i = 0; i < word1.length(); i++) {
+			currLetter = word1.charAt(i);
+			if (letters.containsKey(currLetter)) {
+				num = letters.get(currLetter);
+				letters.put(currLetter, ++num);
+			} else {
 				letters.put(currLetter, 1);
 			}
 		}
-		
-		for(int i=0; i<word2.length(); i++){
-			currLetter=word2.charAt(i);
-			if(letters.containsKey(currLetter)){
-				num=letters.get(currLetter);
-				if(num==0){
-					isAnagram=false;
+
+		for (int i = 0; i < word2.length(); i++) {
+			currLetter = word2.charAt(i);
+			if (letters.containsKey(currLetter)) {
+				num = letters.get(currLetter);
+				if (num == 0) {
+					isAnagram = false;
+				} else {
+					letters.put(currLetter, --num);
 				}
-				else{
-					letters.put(currLetter, num--);
-				}
-			}
-			else{
-				isAnagram=false;
+			} else {
+				isAnagram = false;
 			}
 		}
-		
-		for(int i=0; i<word1.length(); i++){
-			currLetter=word1.charAt(i);
-			if(letters.get(currLetter)!=0){
-				isAnagram=false;
+
+		for (int i = 0; i < word1.length(); i++) {
+			currLetter = word1.charAt(i);
+			num = letters.get(currLetter);
+			if (num != 0) {
+				isAnagram = false;
 			}
 		}
 		return isAnagram;
 	}
-
 }

@@ -32,34 +32,34 @@ public class DictionaryTest {
 	public void testDoesNotContain() {
 		assertTrue(!myDictionary.contains("aaaa"));
 	}
-	
+
 	@Test
-	public void testIsAnagramLoop(){
+	public void testIsAnagramLoop() {
 		assertTrue(myDictionary.isAnagramLoop("pears", "spear"));
 	}
-	
+
 	@Test
-	public void testIsNotAnagramLoop(){
+	public void testIsNotAnagramLoop() {
 		assertTrue(!myDictionary.isAnagramLoop("hello", "hi"));
 	}
-	
+
 	@Test
-	public void testIsAnagramSort(){
+	public void testIsAnagramSort() {
 		assertTrue(myDictionary.isAnagramSort("pears", "spear"));
 	}
-	
+
 	@Test
-	public void testIsNotAnagramSort(){
+	public void testIsNotAnagramSort() {
 		assertTrue(!myDictionary.isAnagramSort("hello", "heloo"));
 	}
-	
+
 	@Test
-	public void testIsAnagramMap(){
-		assertTrue(myDictionary.isAnagramMap("apple", "aplpe"));
+	public void testIsAnagramMap() {
+		assertTrue(myDictionary.isAnagramMap("apple", "aplep"));
 	}
-	
+
 	@Test
-	public void testIsNotAnagramMap(){
+	public void testIsNotAnagramMap() {
 		assertTrue(!myDictionary.isAnagramMap("apple", "aplle"));
 	}
 
