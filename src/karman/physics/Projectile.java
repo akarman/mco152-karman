@@ -18,11 +18,11 @@ public class Projectile {
 		this.time=0.000;
 	}
 	
-	public double getX(double time){
+	public double getX(){
 		return Math.cos(Math.toRadians(angle)) * velocity *  time;
 	}
 	
-	public double getY(double time){
+	public double getY(){
 		return Math.sin(Math.toRadians(angle))* velocity * time +.5*-9.8*(time * time);
 	}
 	public double getAngle(){
@@ -39,6 +39,16 @@ public class Projectile {
 	
 	public double getTime(){
 		return time;
+	}
+
+	public Color getFireColor() {
+		if(time>=0&&time<=.2)
+			return Color.WHITE;
+		if(time>.2&&time<=.4)
+			return Color.YELLOW;
+		if(time>.4&&time<.6)
+			return Color.RED;
+		else return Color.GRAY;
 	}
 
 	

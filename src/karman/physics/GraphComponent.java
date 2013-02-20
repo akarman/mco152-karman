@@ -66,8 +66,8 @@ public class GraphComponent extends JComponent {
 			// calculate x and y
 			Projectile projectile = p[i];
 
-			int x = (int) projectile.getX(projectile.getTime());
-			int y = (int) projectile.getY(projectile.getTime());
+			int x = (int) projectile.getX();
+			int y = (int) projectile.getY();
 
 			g.setColor(projectile.getColor());
 			int size = 30;
@@ -76,8 +76,8 @@ public class GraphComponent extends JComponent {
 			// advance by one tick and check
 			// if off-screen, instantiate a new projectile
 			projectile.tick();
-			x = (int) projectile.getX(projectile.getTime());
-			y = (int) projectile.getY(projectile.getTime());
+			x = (int) projectile.getX();
+			y = (int) projectile.getY();
 			if (isOffScreen(x, y)) {
 				p[i] = new Projectile(getRandomAngle(), getRandomVelocity(),
 						getRandomColor());
