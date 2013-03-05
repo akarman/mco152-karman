@@ -34,7 +34,7 @@ public class Projectile {
 	}
 	
 	public void tick(){
-		time+=.001;
+		time+=.005;
 	}
 	
 	public double getTime(){
@@ -42,13 +42,17 @@ public class Projectile {
 	}
 
 	public Color getFireColor() {
-		if(time>=0&&time<=.2)
+		if(time>=0&&time<=.1)
 			return Color.WHITE;
-		if(time>.2&&time<=.4)
+		if(time>.1&&time<=.2)
 			return Color.YELLOW;
-		if(time>.4&&time<.6)
+		if(time>.2&&time<=.5)
+			return Color.ORANGE;
+		if(time>.5&&time<=1.0)
 			return Color.RED;
-		else return Color.GRAY;
+		if(time>1.0&&time<=1.2)
+			return Color.GRAY;
+		else return Color.BLACK;
 	}
 
 	

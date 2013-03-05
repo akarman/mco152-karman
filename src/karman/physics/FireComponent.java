@@ -27,7 +27,7 @@ public class FireComponent extends JComponent {
 	}
 
 	private int getRandomVelocity() {
-		return 40 + random.nextInt(40);
+		return 90 + random.nextInt(90);
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class FireComponent extends JComponent {
 		Graphics2D g2=(Graphics2D)g;
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f));
 
-		addProjectiles();
+		
 
 		Iterator<Projectile> iter = list.iterator();
 		Projectile projectile;
@@ -50,25 +50,26 @@ public class FireComponent extends JComponent {
 			int y = (int) projectile.getY();
 
 			g.setColor(projectile.getFireColor());
-			int size = 5;
+			int size = 10;
 
 			g.fillOval(x - size / 2, -y - (size / 2), size, size);
 
 			projectile.tick();
 
-			if (projectile.getTime() > .6) {
+			if (projectile.getTime() > 1.2) {
 				iter.remove();
 			}
 		}
-
+		addProjectiles();
 		this.repaint();
 	}
 
 	private void addProjectiles() {
-		if (list.size() < 5000) {
-			for (int i = 0; i < 10; i++) {
+		if (list.size() < 7000) {
+			for (int i = 0; i < 30; i++) {
 				list.add(new Projectile(getRandomAngle(), getRandomVelocity(),
 						Color.WHITE));
+				System.out.println("Number of particles:" + list.size());
 			}
 		}
 
