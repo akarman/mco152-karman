@@ -8,22 +8,35 @@ public class Projectile {
 	private double angle;
 	private double velocity;
 	private Color color;
-	private double time;
+	private int size;
+	private double lifespan;
+	private double startTime;
+	private double sin;
+	private double cos;
+	private int startX;
+	private int startY;
 	
 	
-	public Projectile(double angle, double velocity, Color color) {
-		this.angle = angle;
+	public Projectile(double angleDegrees, double velocity, Color color,
+			int size, double lifespan, double startTime, int x, int y) {
+		this.angle = Math.toRadians(angleDegrees);
 		this.velocity = velocity;
-		this.color=color;
-		this.time=0.000;
+		this.color = color;
+		this.size = size;
+		this.lifespan = lifespan;
+		this.startTime = startTime;
+		sin = Math.sin(angle);
+		cos = Math.cos(angle);
+		this.startX = x;
+		this.startY = y;
 	}
 	
-	public double getX(){
-		return Math.cos(Math.toRadians(angle)) * velocity *  time;
+	public double getX(double time){
+		return cos * velocity *  time + startX;
 	}
 	
-	public double getY(){
-		return Math.sin(Math.toRadians(angle))* velocity * time +.5*-9.8*(time * time);
+	public double getY(double time){
+		return sin * velocity * time + (.5 * -9.8 * time * time) + startY;
 	}
 	public double getAngle(){
 		return angle;
@@ -33,28 +46,51 @@ public class Projectile {
 		return color;
 	}
 	
-	public void tick(){
-		time+=.005;
+	public void setStartTime(double startTime){
+		this.startTime=startTime;
 	}
 	
-	public double getTime(){
-		return time;
+	public double getStartTime() {
+		return startTime;
 	}
 
-	public Color getFireColor() {
-		if(time>=0&&time<=.1)
-			return Color.WHITE;
-		if(time>.1&&time<=.2)
-			return Color.YELLOW;
-		if(time>.2&&time<=.5)
-			return Color.ORANGE;
-		if(time>.5&&time<=1.0)
-			return Color.RED;
-		if(time>1.0&&time<=1.2)
-			return Color.GRAY;
-		else return Color.BLACK;
+	public int getStartX() {
+		return startX;
 	}
 
+	public void setStartX(int startX) {
+		this.startX = startX;
+	}
+
+	public int getStartY() {
+		return startY;
+	}
+
+	public void setStartY(int startY) {
+		this.startY = startY;
+	}
+
+	public double getVelocity() {
+		return velocity;
+	}
+
+	public void setVelocity(double velocity) {
+		this.velocity = velocity;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	public double getLifespan() {
+		return lifespan;
+	}
+
+	
 	
 	
 	
