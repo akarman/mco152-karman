@@ -25,7 +25,7 @@ public class TileFactory {
 	}
 	
 	public char getRandomTile(){
-		int index=random.nextInt(145);
+		int index=random.nextInt(letters.length);
 		return letters[index];
 	}
 }
