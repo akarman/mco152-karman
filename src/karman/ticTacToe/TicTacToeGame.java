@@ -1,28 +1,20 @@
 package karman.ticTacToe;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Stack;
 
 public class TicTacToeGame {
 	private Stack<BoardGame> boardStack;
 	private Move player;
-	private int numGames;
+	private HashMap<ArrayList<Move>, BoardGame> uniqueBoards;
+	private HashMap<ArrayList<Move>, BoardGame> uniqueBoardStates;
 
 	public TicTacToeGame() {
 		boardStack = new Stack<BoardGame>();
 		player = Move.X;
-		pushInitialBoards();
-		numGames = 0;
-
-	}
-
-	private void pushInitialBoards() {
-		BoardGame b = new BoardGame();
-		int[][] possibleMoves = b.getPossibleMoves();
-		for (int i = 0; i < possibleMoves.length; i++) {
-			b = new BoardGame();
-			b.mark(player, possibleMoves[i][0], possibleMoves[i][1]);
-			boardStack.push(b);
-		}
+		uniqueBoards = new HashMap<ArrayList<Move>, BoardGame>();
+		uniqueBoardStates = new HashMap<ArrayList<Move>, BoardGame>();
 	}
 
 	private void pushNextBoards(BoardGame b) {
@@ -36,12 +28,18 @@ public class TicTacToeGame {
 	}
 
 	public void playGame() {
+		boardStack.push(new BoardGame());
 		while (!boardStack.isEmpty()) {
 			BoardGame topBoard = boardStack.pop();
+			if (!uniqueBoardStates.containsKey(topBoard.getBoardArrayList())) {
+				uniqueBoardStates.put(topBoard.getBoardArrayList(), topBoard);
+			}
 			if (!topBoard.gameOver()) {
 				pushNextBoards(topBoard);
 			} else {
-				numGames++;
+				if (!uniqueBoards.containsKey(topBoard)) {
+					uniqueBoards.put(topBoard.getBoardArrayList(), topBoard);
+				}
 				if (topBoard.gameWon()) {
 					System.out.println(topBoard.getWinner()
 							+ " IS THE WINNER!!\n");
@@ -52,7 +50,9 @@ public class TicTacToeGame {
 				System.out.print("\n");
 			}
 		}
-		System.out.println("Number of games " + numGames);
+		System.out.println("Number of games " + uniqueBoards.size());
+		System.out.println("Number of unique game states: "
+				+ uniqueBoardStates.size());
 	}
 
 	private void changePlayer() {

@@ -1,5 +1,7 @@
 package karman.ticTacToe;
 
+import java.util.ArrayList;
+
 public class BoardGame {
 	private Move[][] board;
 	private Move winner;
@@ -33,6 +35,16 @@ public class BoardGame {
 
 	public Move[][] getBoard() {
 		return board;
+	}
+
+	public ArrayList<Move> getBoardArrayList() {
+		ArrayList<Move> boardArrayList = new ArrayList<Move>();
+		for (int row = 0; row < 3; row++) {
+			for (int col = 0; col < 3; col++) {
+				boardArrayList.add(board[row][col]);
+			}
+		}
+		return boardArrayList;
 	}
 
 	public void mark(Move move, int row, int col) {
