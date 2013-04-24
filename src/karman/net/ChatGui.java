@@ -80,6 +80,7 @@ public class ChatGui extends JFrame {
 	}
 
 	public static void main(String[] args) {
+		//can initialize Socket here diff for client and server and pass into ChatGui constructor
 		ChatGui gui = new ChatGui();
 		ReaderThread reader = new ReaderThread(gui.getSocket(), gui);
 		reader.start();
@@ -99,7 +100,7 @@ public class ChatGui extends JFrame {
 				}
 				composeField.setText("");
 				try {
-					newText += "\n";
+					newText+="\n";
 					out.write(newText.getBytes());
 					out.flush();
 				} catch (IOException e) {
