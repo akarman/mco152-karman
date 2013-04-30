@@ -6,6 +6,9 @@ public class BoardGame {
 	private Move[][] board;
 	private Move winner;
 	private int[][] possibleMoves;
+	private int[][] pastMoves;
+	private int numMoves;
+	private Move currentPlayer;
 
 	public BoardGame() {
 		board = new Move[3][3];
@@ -16,6 +19,9 @@ public class BoardGame {
 		}
 		possibleMoves = this.getNextMoves();
 		winner = Move.EMPTY;
+		pastMoves = new int[9][2];
+		numMoves = 0;
+		currentPlayer = Move.X;
 	}
 
 	public BoardGame(BoardGame orig) {
@@ -27,6 +33,32 @@ public class BoardGame {
 		}
 		possibleMoves = this.getNextMoves();
 		winner = orig.winner;
+		pastMoves = orig.getPastMoves();
+		this.numMoves = orig.numMoves;
+		this.currentPlayer = orig.currentPlayer;
+	}
+
+	public Move getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public void setCurrentPlayer(Move currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+
+	public void changeCurrentPlayer() {
+
+		switch (this.currentPlayer) {
+		case X:
+			setCurrentPlayer(Move.O);
+			break;
+		case O:
+			setCurrentPlayer(Move.X);
+			break;
+		default:
+			break;
+
+		}
 	}
 
 	public int[][] getPossibleMoves() {
@@ -50,6 +82,11 @@ public class BoardGame {
 	public void mark(Move move, int row, int col) {
 		board[row][col] = move;
 		possibleMoves = getNextMoves();
+		pastMoves[numMoves][0] = row;
+		pastMoves[numMoves][1] = col;
+		numMoves++;
+		
+		changeCurrentPlayer();
 	}
 
 	public void markX(int row, int col) {
@@ -197,4 +234,20 @@ public class BoardGame {
 	public Move getWinner() {
 		return winner;
 	}
+
+	public int[][] getPastMoves() {
+		int[][] deepCopyPastMoves = new int[9][2];
+		for (int row = 0; row < 9; row++) {
+			for (int col = 0; col < 2; col++) {
+				deepCopyPastMoves[row][col] = pastMoves[row][col];
+			}
+		}
+		// return pastMoves;
+		return deepCopyPastMoves;
+	}
+
+	public int getNumMoves() {
+		return numMoves;
+	}
+
 }

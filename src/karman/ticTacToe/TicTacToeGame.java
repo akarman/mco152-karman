@@ -27,19 +27,19 @@ public class TicTacToeGame {
 		}
 	}
 
+	
 	public void playGame() {
 		boardStack.push(new BoardGame());
 		while (!boardStack.isEmpty()) {
 			BoardGame topBoard = boardStack.pop();
-			if (!uniqueBoardStates.containsKey(topBoard.getBoardArrayList())) {
-				uniqueBoardStates.put(topBoard.getBoardArrayList(), topBoard);
-			}
+			uniqueBoardStates.put(topBoard.getBoardArrayList(), topBoard);
+
 			if (!topBoard.gameOver()) {
 				pushNextBoards(topBoard);
 			} else {
-				if (!uniqueBoards.containsKey(topBoard)) {
-					uniqueBoards.put(topBoard.getBoardArrayList(), topBoard);
-				}
+
+				uniqueBoards.put(topBoard.getBoardArrayList(), topBoard);
+
 				if (topBoard.gameWon()) {
 					System.out.println(topBoard.getWinner()
 							+ " IS THE WINNER!!\n");
