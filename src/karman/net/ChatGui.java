@@ -56,7 +56,7 @@ public class ChatGui extends JFrame {
 
 	private void setUpSocket() {
 		try {
-			this.socket = new Socket("192.168.117.195", 1025);
+			this.socket = new Socket("192.168.117.119", 8080);
 			out = socket.getOutputStream();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -80,7 +80,8 @@ public class ChatGui extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		//can initialize Socket here diff for client and server and pass into ChatGui constructor
+		// can initialize Socket here diff for client and server and pass into
+		// ChatGui constructor
 		ChatGui gui = new ChatGui();
 		ReaderThread reader = new ReaderThread(gui.getSocket(), gui);
 		reader.start();
@@ -94,14 +95,11 @@ public class ChatGui extends JFrame {
 			JButton theButton = (JButton) ae.getSource();
 
 			if (theButton.equals(sendButton)) {
-				String newText = composeField.getText();
-				if (newText != "") {
-					addText(newText);
-				}
+				String newText = "Karman: " + composeField.getText();
 				composeField.setText("");
 				try {
-					newText+="\n";
 					out.write(newText.getBytes());
+					out.write("\n".getBytes());
 					out.flush();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block

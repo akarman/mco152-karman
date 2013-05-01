@@ -25,7 +25,7 @@ public class ReaderThread extends Thread {
 
 	@Override
 	public void run() {
-		if (scanner.hasNextLine()) {
+		while (scanner.hasNextLine()) {
 			String newText = scanner.nextLine();
 			gui.addText(newText);
 
