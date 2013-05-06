@@ -25,7 +25,7 @@ public class WriterThread extends Thread {
 
 	public void addMessage(String message) {
 		logger.log(Level.INFO, "Received message from client - " + message);
-		messages.add(message + "\n");
+		messages.add(message);
 	}
 
 	public void writeMessage() throws InterruptedException {

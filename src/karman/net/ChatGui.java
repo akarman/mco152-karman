@@ -56,13 +56,11 @@ public class ChatGui extends JFrame {
 
 	private void setUpSocket() {
 		try {
-			this.socket = new Socket("192.168.117.119", 8080);
+			this.socket = new Socket("localhost", 8080);
 			out = socket.getOutputStream();
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -80,8 +78,6 @@ public class ChatGui extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		// can initialize Socket here diff for client and server and pass into
-		// ChatGui constructor
 		ChatGui gui = new ChatGui();
 		ReaderThread reader = new ReaderThread(gui.getSocket(), gui);
 		reader.start();
