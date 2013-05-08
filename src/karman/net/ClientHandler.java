@@ -8,8 +8,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ClientHandler extends Thread {
-
-	private Socket socket;
 	private InputStream in;
 	private Scanner scanner;
 	private WriterThread writer;
@@ -17,10 +15,9 @@ public class ClientHandler extends Thread {
 			.getName());
 
 	public ClientHandler(Socket socket, WriterThread writer) throws IOException {
-		this.socket = socket;
 		in = socket.getInputStream();
 		scanner = new Scanner(in);
-		this.writer=writer;
+		this.writer = writer;
 
 	}
 
@@ -28,7 +25,7 @@ public class ClientHandler extends Thread {
 	public void run() {
 		String message;
 		while (scanner.hasNextLine()) {
-			message= scanner.nextLine();
+			message = scanner.nextLine();
 			logger.log(Level.INFO, "New message accepted");
 			writer.addMessage(message);
 		}
