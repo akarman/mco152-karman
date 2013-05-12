@@ -7,13 +7,11 @@ import java.util.Scanner;
 
 public class ReaderThread extends Thread {
 
-	private Socket socket;
 	private Scanner scanner;
 	private ChatGui gui;
 
 	public ReaderThread(Socket socket, ChatGui gui) {
 		this.gui = gui;
-		this.socket = socket;
 		try {
 			InputStream in = socket.getInputStream();
 			Scanner scanner = new Scanner(in);
@@ -26,9 +24,10 @@ public class ReaderThread extends Thread {
 	@Override
 	public void run() {
 		while (scanner.hasNextLine()) {
-			String newText = scanner.nextLine();
-			gui.addText(newText);
+			String message = scanner.nextLine();
+			String newText = MessageFormatter.formatMessage(message);
 
+			gui.addText(newText);
 		}
 	}
 

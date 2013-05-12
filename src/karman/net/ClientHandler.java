@@ -8,7 +8,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ClientHandler extends Thread {
-
 	private InputStream in;
 	private Scanner scanner;
 	private WriterThread writer;

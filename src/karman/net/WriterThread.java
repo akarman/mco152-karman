@@ -34,10 +34,10 @@ public class WriterThread extends Thread {
 		OutputStream outputStream;
 		while (iter.hasNext()) {
 			outputStream = iter.next();
-			logger.log(Level.INFO, "Writing out first message in queue - "
-					+ message);
+			
 			try {
-
+				logger.log(Level.INFO, "Writing out first message in queue - "
+						+ message);
 				writeToStream(message, outputStream);
 			} catch (IOException e) {
 				iter.remove();

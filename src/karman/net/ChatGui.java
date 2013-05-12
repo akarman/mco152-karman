@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -12,21 +14,26 @@ import java.net.UnknownHostException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class ChatGui extends JFrame {
+public class ChatGui extends JFrame implements WindowListener {
 	private JButton sendButton;
 	private JTextField composeField;
 	private JTextArea chatTextArea;
 	private JPanel buttonPanel;
 	private Socket socket;
 	private OutputStream out;
+	private String name;
 
 	public ChatGui() {
 
+		name = JOptionPane.showInputDialog("Enter your name:");
+
 		setUpSocket();
+		sendJoinMessage();
 
 		this.setSize(400, 400);
 		this.setTitle("Chat Buddy");
@@ -50,13 +57,24 @@ public class ChatGui extends JFrame {
 
 		this.add(chatTextArea, BorderLayout.CENTER);
 		this.add(buttonPanel, BorderLayout.SOUTH);
+		addWindowListener(this);
 
 		setVisible(true);
 	}
 
+	private void sendJoinMessage() {
+		try {
+			out.write("JOIN ".getBytes());
+			out.write(name.getBytes());
+			out.write("\n".getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private void setUpSocket() {
 		try {
-			this.socket = new Socket("localhost", 8080);
+			this.socket = new Socket("192.168.117.105", 8080);
 			out = socket.getOutputStream();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -91,20 +109,60 @@ public class ChatGui extends JFrame {
 			JButton theButton = (JButton) ae.getSource();
 
 			if (theButton.equals(sendButton)) {
-				String newText = "Karman: " + composeField.getText();
+				String newText = composeField.getText();
 				composeField.setText("");
 				try {
-					out.write(newText.getBytes());
-					out.write("\n".getBytes());
+					String message = "SAY " + name + " " + newText + "\n";
+					out.write(message.getBytes());
 					out.flush();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
 			}
 
 		}
+
+	}
+
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+
+	}
+
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+
+	}
+
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		String message = "LEAVE " + name + "\n";
+		try {
+			out.write(message.getBytes());
+			out.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+
+	}
+
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+
+	}
+
+	@Override
+	public void windowOpened(WindowEvent arg0) {
 
 	}
 
