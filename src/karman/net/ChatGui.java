@@ -26,14 +26,15 @@ public class ChatGui extends JFrame implements WindowListener {
 	private JPanel buttonPanel;
 	private Socket socket;
 	private OutputStream out;
-	private String name;
+	private String memberName;
+
+	private ChatMembersPanel membersPanel;
 
 	public ChatGui() {
 
-		name = JOptionPane.showInputDialog("Enter your name:");
+		memberName = JOptionPane.showInputDialog("Enter your name:");
 
 		setUpSocket();
-		sendJoinMessage();
 
 		this.setSize(400, 400);
 		this.setTitle("Chat Buddy");
@@ -51,21 +52,36 @@ public class ChatGui extends JFrame implements WindowListener {
 		sendButton.addActionListener(new ButtonListener());
 
 		this.chatTextArea = new JTextArea();
-		chatTextArea.setMinimumSize(new Dimension(getWidth(), 350));
+		chatTextArea.setSize(new Dimension(300, 350));
 		chatTextArea.setEditable(false);
 		chatTextArea.setLineWrap(true);
 
+		this.membersPanel = new ChatMembersPanel();
+		membersPanel.setMinimumSize(new Dimension(100, getHeight()));
+
 		this.add(chatTextArea, BorderLayout.CENTER);
 		this.add(buttonPanel, BorderLayout.SOUTH);
+		this.add(membersPanel, BorderLayout.EAST);
 		addWindowListener(this);
 
+		sendJoinMessage();
 		setVisible(true);
 	}
 
 	private void sendJoinMessage() {
 		try {
 			out.write("JOIN ".getBytes());
-			out.write(name.getBytes());
+			out.write(memberName.getBytes());
+			out.write("\n".getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void sendAnnounceMessage() {
+		try {
+			out.write("ANNOUNCE ".getBytes());
+			out.write(memberName.getBytes());
 			out.write("\n".getBytes());
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -74,7 +90,7 @@ public class ChatGui extends JFrame implements WindowListener {
 
 	private void setUpSocket() {
 		try {
-			this.socket = new Socket("192.168.117.105", 8080);
+			this.socket = new Socket("localhost", 8080);
 			out = socket.getOutputStream();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -102,6 +118,14 @@ public class ChatGui extends JFrame implements WindowListener {
 
 	}
 
+	public ChatMembersPanel getMembersPanel() {
+		return membersPanel;
+	}
+
+	public String getMemberName() {
+		return memberName;
+	}
+
 	private class ButtonListener implements ActionListener {
 
 		@Override
@@ -112,7 +136,7 @@ public class ChatGui extends JFrame implements WindowListener {
 				String newText = composeField.getText();
 				composeField.setText("");
 				try {
-					String message = "SAY " + name + " " + newText + "\n";
+					String message = "SAY " + memberName + " " + newText + "\n";
 					out.write(message.getBytes());
 					out.flush();
 				} catch (IOException e) {
@@ -137,7 +161,7 @@ public class ChatGui extends JFrame implements WindowListener {
 
 	@Override
 	public void windowClosing(WindowEvent arg0) {
-		String message = "LEAVE " + name + "\n";
+		String message = "LEAVE " + memberName + "\n";
 		try {
 			out.write(message.getBytes());
 			out.flush();

@@ -25,9 +25,11 @@ public class ReaderThread extends Thread {
 	public void run() {
 		while (scanner.hasNextLine()) {
 			String message = scanner.nextLine();
-			String newText = MessageFormatter.formatMessage(message);
+			String newText = MessageFormatter.formatMessage(message, gui);
 
-			gui.addText(newText);
+			if (newText != null) {
+				gui.addText(newText);
+			}
 		}
 	}
 
