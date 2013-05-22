@@ -9,6 +9,7 @@ public class ReaderThread extends Thread {
 
 	private Scanner scanner;
 	private ChatGui gui;
+	private Message[] messages;
 
 	public ReaderThread(Socket socket, ChatGui gui) {
 		this.gui = gui;
@@ -19,16 +20,22 @@ public class ReaderThread extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		messages = new Message[] { new JoinMessage(), new SayMessage(),
+				new AnnounceMessage(), new LeaveMessage() };
+
 	}
 
 	@Override
 	public void run() {
 		while (scanner.hasNextLine()) {
 			String message = scanner.nextLine();
-			String newText = MessageFormatter.formatMessage(message, gui);
 
-			if (newText != null) {
-				gui.addText(newText);
+			for (Message m : messages) {
+				if (m.isMessage(message)) {
+					m.setMessage(message);
+					m.display(gui);
+				}
 			}
 		}
 	}

@@ -1,7 +1,6 @@
 package karman.net;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,10 +15,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class ChatGui extends JFrame implements WindowListener {
+
+	private static final long serialVersionUID = 1L;
 	private JButton sendButton;
 	private JTextField composeField;
 	private JTextArea chatTextArea;
@@ -27,6 +29,7 @@ public class ChatGui extends JFrame implements WindowListener {
 	private Socket socket;
 	private OutputStream out;
 	private String memberName;
+	private JScrollPane scroll;
 
 	private ChatMembersPanel membersPanel;
 
@@ -52,14 +55,14 @@ public class ChatGui extends JFrame implements WindowListener {
 		sendButton.addActionListener(new ButtonListener());
 
 		this.chatTextArea = new JTextArea();
-		chatTextArea.setSize(new Dimension(300, 350));
 		chatTextArea.setEditable(false);
 		chatTextArea.setLineWrap(true);
 
-		this.membersPanel = new ChatMembersPanel();
-		membersPanel.setMinimumSize(new Dimension(100, getHeight()));
+		scroll = new JScrollPane(chatTextArea);
 
-		this.add(chatTextArea, BorderLayout.CENTER);
+		this.membersPanel = new ChatMembersPanel();
+
+		this.add(scroll, BorderLayout.CENTER);
 		this.add(buttonPanel, BorderLayout.SOUTH);
 		this.add(membersPanel, BorderLayout.EAST);
 		addWindowListener(this);
@@ -73,6 +76,7 @@ public class ChatGui extends JFrame implements WindowListener {
 			out.write("JOIN ".getBytes());
 			out.write(memberName.getBytes());
 			out.write("\n".getBytes());
+			out.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -83,6 +87,7 @@ public class ChatGui extends JFrame implements WindowListener {
 			out.write("ANNOUNCE ".getBytes());
 			out.write(memberName.getBytes());
 			out.write("\n".getBytes());
+			out.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -90,7 +95,7 @@ public class ChatGui extends JFrame implements WindowListener {
 
 	private void setUpSocket() {
 		try {
-			this.socket = new Socket("localhost", 8080);
+			this.socket = new Socket("192.168.117.126", 8080);
 			out = socket.getOutputStream();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
